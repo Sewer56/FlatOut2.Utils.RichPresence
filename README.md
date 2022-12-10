@@ -19,3 +19,7 @@ If you're using ZPatch/Menu, you already have the correct `.exe`.
 
 **A.** Install Reloaded mod as usual. (From `Download Mods` launcher page or Extract to Mods Folder)  
 **B.** Enable mod and run the game.  
+
+## Credit(s)
+
+- [Zolika1351](https://github.com/Zolika1351): Original C++ headers from which a lot of the FlatOut2.SDK source was derived from.  
