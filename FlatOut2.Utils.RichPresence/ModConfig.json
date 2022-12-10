@@ -2,7 +2,7 @@
   "ModId": "FlatOut2.Utils.RichPresence",
   "ModName": "FlatOut 2 Discord Rich Presence",
   "ModAuthor": "Sewer56",
-  "ModVersion": "1.0.0",
+  "ModVersion": "1.0.1",
   "ModDescription": "Basic implementation of Discord Rich Presence for FlatOut 2",
   "ModDll": "FlatOut2.Utils.RichPresence.dll",
   "ModIcon": "Preview.png",
@@ -50,5 +50,5 @@
   "SupportedAppId": [
     "flatout2.exe"
   ],
-  "ProjectUrl": ""
+  "ProjectUrl": "https://github.com/Sewer56/FlatOut2.Utils.RichPresence"
 }
