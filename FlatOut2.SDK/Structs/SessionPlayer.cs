@@ -21,16 +21,29 @@ public unsafe struct SessionPlayer
     [FieldOffset(0x13C)]
     public int CarId;
     
-    [FieldOffset(0x160)]
-    public void* PlayerNamePtr;
-
-    public string GetPlayerName() => PlayerNamePtr == null ? "" : Marshal.PtrToStringUni((nint)PlayerNamePtr);
-
     /// <summary>
-    /// This'll be 0 if the wchar_t is a pointer
+    /// If player name is shorter than 16 bytes, the name starts from here.
+    /// If name is longer, this field is a pointer.
     /// </summary>
-    [FieldOffset(0x165)]
-    public void* PlayerNamePtrRemains;
+    [FieldOffset(0x160)]
+    public void* PlayerNamePtrOrInline;
+    
+    /// <summary>
+    /// Gets the player name for this structure.
+    /// </summary>
+    public static unsafe string GetPlayerName(SessionPlayer* sessionPlayer)
+    {
+        if (sessionPlayer->PlayerNameExtraData == (void*)0x0)
+            return sessionPlayer->PlayerNamePtrOrInline == null ? "" : Marshal.PtrToStringUni((nint)sessionPlayer->PlayerNamePtrOrInline);
+        
+        return Marshal.PtrToStringUni((nint)(&sessionPlayer->PlayerNamePtrOrInline));
+    }
+    /// <summary>
+    /// This'll be 0 if the <see cref="PlayerNamePtrOrInline"/> is a pointer.
+    /// Else this contains rest of name.
+    /// </summary>
+    [FieldOffset(0x164)]
+    public void* PlayerNameExtraData;
 
     [FieldOffset(0x1F4)]
     public SessionPlayerStatus PlayerStatus;
