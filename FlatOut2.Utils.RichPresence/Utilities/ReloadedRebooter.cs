@@ -27,15 +27,15 @@ public static class ReloadedUtils
         if (HasBootstrapper(Path.GetDirectoryName(currentExePath)))
         {
             _rebootCommandLine = currentExePath;
-            _rebootCommandLineArgs = null;
-            args = null;
+            _rebootCommandLineArgs = "";
+            args = "";
             return currentExePath;
         }
 
         // Check if we have ASI Plugin installed by looking 
         var loaderConfigPath = Path.Combine(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Reloaded-Mod-Loader-II"), "ReloadedII.json");
         var json = JsonNode.Parse(File.ReadAllText(loaderConfigPath));
-        _rebootCommandLine = json["LauncherPath"].ToString();
+        _rebootCommandLine = json!["LauncherPath"]!.ToString();
         _rebootCommandLineArgs = $"--launch \"{currentExePath}\"";
         args = _rebootCommandLineArgs;
         return _rebootCommandLine;

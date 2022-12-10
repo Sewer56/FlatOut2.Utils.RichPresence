@@ -1,7 +1,4 @@
-﻿using System.Buffers.Text;
-using System.Diagnostics;
-using System.Net.Sockets;
-using System.Runtime.InteropServices;
+﻿using System.Diagnostics;
 using System.Text;
 using DiscordRPC;
 using DiscordRPC.Logging;
@@ -26,7 +23,6 @@ public class RPC
     private DiscordRpcClient _discordRpc;
     private bool _enableRpc = true;
 
-    private WeakReference<Socket> _last = new WeakReference<Socket>(null);
     private bool _isJoining = false;
     private readonly ILogger _logger;
     private Config _configuration;

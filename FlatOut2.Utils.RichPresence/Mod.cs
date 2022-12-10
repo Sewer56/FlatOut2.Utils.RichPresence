@@ -11,11 +11,6 @@ namespace FlatOut2.Utils.RichPresence;
 public class Mod : ModBase // <= Do not Remove.
 {
     /// <summary>
-    /// Provides access to the mod loader API.
-    /// </summary>
-    private readonly IModLoader _modLoader;
-
-    /// <summary>
     /// Provides access to the Reloaded.Hooks API.
     /// </summary>
     /// <remarks>This is null if you remove dependency on Reloaded.SharedLib.Hooks in your mod.</remarks>
@@ -25,11 +20,6 @@ public class Mod : ModBase // <= Do not Remove.
     /// Provides access to the Reloaded logger.
     /// </summary>
     private readonly ILogger _logger;
-
-    /// <summary>
-    /// Entry point into the mod, instance that created this class.
-    /// </summary>
-    private readonly IMod _owner;
 
     /// <summary>
     /// Provides access to this mod's configuration.
@@ -45,10 +35,8 @@ public class Mod : ModBase // <= Do not Remove.
     
     public Mod(ModContext context)
     {
-        _modLoader = context.ModLoader;
         _hooks = context.Hooks;
         _logger = context.Logger;
-        _owner = context.Owner;
         _configuration = context.Configuration;
         _modConfig = context.ModConfig;
         
@@ -58,7 +46,7 @@ public class Mod : ModBase // <= Do not Remove.
         // If you want to implement e.g. unload support in your mod,
         // and some other neat features, override the methods in ModBase.
 
-        SDK.SDK.Init(_hooks);
+        SDK.SDK.Init(_hooks!);
         _rpc = new RPC(_logger, _configuration);
     }
 
