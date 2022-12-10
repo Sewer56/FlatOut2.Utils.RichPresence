@@ -108,6 +108,26 @@ public static class Info
             var racePtr = *RaceInfo.Instance;
             return racePtr == null ? 0 : racePtr->LevelId;
         }
+        
+        /// <summary>
+        /// Gets the id of the current car used.
+        /// </summary>
+        public static unsafe int GetCurrentCarId(int playerNo = 0)
+        {
+            var info = *RaceInfo.Instance;
+            if (info == null)
+                return 0;
+
+            var playerHost = info->HostObject;
+            if (playerHost == null)
+                return 0;
+
+            var sessionPlayer = playerHost->Players[playerNo];
+            if (sessionPlayer == null)
+                return 0;
+
+            return sessionPlayer->CarId;
+        }
 
         /// <summary>
         /// Retrieves the current race mode as a readable string.

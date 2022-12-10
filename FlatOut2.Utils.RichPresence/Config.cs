@@ -25,10 +25,11 @@ public class Config : Configurable<Config>
         The `DefaultValue` attribute is used as part of the `Reset` button in Reloaded-Launcher.
     */
 
-    [DisplayName("Custom Game Name")]
-    [Description("Sets an alternative name of the game 'e.g. FlatOut Joint'.")]
-    [DefaultValue("")]
-    public string CustomGameName { get; set; } = string.Empty;
+    [DisplayName("Include Car in Presence")]
+    [Description("Includes the name of the currently driven car in Rich Presence.\n" +
+                 "Not currently supported [blame FOJ], will come in update in future.")]
+    [DefaultValue(false)]
+    public bool IncludeCar { get; set; } = false;
 }
 
 /// <summary>

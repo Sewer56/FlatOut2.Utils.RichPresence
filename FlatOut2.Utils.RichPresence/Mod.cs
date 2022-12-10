@@ -59,7 +59,7 @@ public class Mod : ModBase // <= Do not Remove.
         // and some other neat features, override the methods in ModBase.
 
         SDK.SDK.Init(_hooks);
-        _rpc = new RPC(_logger);
+        _rpc = new RPC(_logger, _configuration);
     }
 
     #region Standard Overrides
@@ -68,6 +68,7 @@ public class Mod : ModBase // <= Do not Remove.
         // Apply settings from configuration.
         // ... your code here.
         _configuration = configuration;
+        _rpc.SetConfiguration(_configuration);
         _logger.WriteLine($"[{_modConfig.ModId}] Config Updated: Applying");
     }
     #endregion

@@ -8,6 +8,7 @@ using DiscordRPC.Logging;
 using DiscordRPC.Message;
 using FlatOut2.SDK.API;
 using FlatOut2.SDK.Enums;
+using FlatOut2.Utils.RichPresence.Configuration;
 using FlatOut2.Utils.RichPresence.Utilities;
 using ILogger = Reloaded.Mod.Interfaces.ILogger;
 
@@ -28,12 +29,14 @@ public class RPC
     private WeakReference<Socket> _last = new WeakReference<Socket>(null);
     private bool _isJoining = false;
     private readonly ILogger _logger;
+    private Config _configuration;
     private readonly Timer _timer;
 
-    public RPC(ILogger logger)
+    public RPC(ILogger logger, Config configuration)
     {
         _logger = logger;
-        
+        _configuration = configuration;
+
         // Not like you could get this from decompiling anyway. Obfuscation? That sucks.
         _discordRpc = new DiscordRpcClient("1050028179185737728", -1, new NullLogger(), true, null);
         _discordRpc.Initialize();
@@ -44,6 +47,8 @@ public class RPC
         _discordRpc.OnJoin += OnJoin;
         _timer = new Timer(OnTick, null, 0, 5000);
     }
+
+    internal void SetConfiguration(Config config) => _configuration = config;
 
     private void OnJoinRequested(object sender, JoinRequestMessage args)
     {
@@ -101,7 +106,12 @@ public class RPC
                 timeStamps.Start = levelStartTime;
                 richPresence.Timestamps = timeStamps;
             }
+            
+            // Add car
+            if (_configuration.IncludeCar)
+                richPresence.State += $" with {Info.Race.GetCurrentCarId()}";
 
+            // Add level and image
             var levelName = Info.Race.GetCurrentLevelName();
             var iconName = Path.GetFileNameWithoutExtension(Info.Race.GetCurrentLevelLoadingScreenPath());
             richPresence.Assets.LargeImageText = levelName;
