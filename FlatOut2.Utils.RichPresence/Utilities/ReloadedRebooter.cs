@@ -24,7 +24,7 @@ public static class ReloadedUtils
 
         // Otherwise compute.
         var currentExePath = Process.GetCurrentProcess().MainModule!.FileName;
-        if (HasBootstrapper(Path.GetDirectoryName(currentExePath)))
+        if (HasBootstrapper(Path.GetDirectoryName(currentExePath)!))
         {
             _rebootCommandLine = currentExePath;
             _rebootCommandLineArgs = "";
@@ -45,7 +45,7 @@ public static class ReloadedUtils
     /// Checks if Reloaded Bootstrapper is present.
     /// </summary>
     /// <param name="directoryName">Directory where game is contained.</param>
-    private static bool HasBootstrapper(string? directoryName)
+    private static bool HasBootstrapper(string directoryName)
     {
         var files = Directory.GetFiles(directoryName, "*.asi", SearchOption.AllDirectories);
         return files.Any(x => Path.GetFileName(x).Equals("Reloaded.Mod.Loader.Bootstrapper.asi", StringComparison.OrdinalIgnoreCase));

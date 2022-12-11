@@ -36,8 +36,8 @@ public class RPC
         _logger = logger;
         _configuration = configuration;
 
-        var gameFolder = Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName);
-        var patchPath = Path.Combine(gameFolder, "patch");
+        var gameFolder = Path.GetDirectoryName(Process.GetCurrentProcess().MainModule!.FileName);
+        var patchPath = Path.Combine(gameFolder!, "patch");
         if (File.Exists(patchPath))
             _carNameResolver = PatchChecker.GetModType(File.ReadAllBytes(patchPath)) == ModType.FlatoutJoint ? new FojCarNameResolver() : new DefaultCarNameResolver();
         else
@@ -91,7 +91,7 @@ public class RPC
         Environment.Exit(0);
     }
 
-    private void OnTick(object state)
+    private void OnTick(object? state)
     {
         var richPresence = new DiscordRPC.RichPresence
         {
