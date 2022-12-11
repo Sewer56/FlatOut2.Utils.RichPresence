@@ -35,7 +35,8 @@ public class RPC
         _logger = logger;
         _configuration = configuration;
 
-        var patch = PatchChecker.GetModType(File.ReadAllBytes("patch"));
+        var gameFolder = Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName);
+        var patch = PatchChecker.GetModType(File.ReadAllBytes(Path.Combine(gameFolder, "patch")));
         _carNameResolver = patch == ModType.FlatoutJoint ? new FojCarNameResolver() : new DefaultCarNameResolver();
 
         // Not like you could get this from decompiling anyway. Obfuscation? That sucks.
