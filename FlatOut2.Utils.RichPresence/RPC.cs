@@ -7,6 +7,7 @@ using FlatOut2.SDK.API;
 using FlatOut2.SDK.Enums;
 using FlatOut2.Utils.RichPresence.Configuration;
 using FlatOut2.Utils.RichPresence.Utilities;
+using FlatOut2.Utils.RichPresence.Utilities.Car;
 using ILogger = Reloaded.Mod.Interfaces.ILogger;
 
 namespace FlatOut2.Utils.RichPresence;
@@ -27,11 +28,15 @@ public class RPC
     private readonly ILogger _logger;
     private Config _configuration;
     private readonly Timer _timer;
+    private ICarNameResolver _carNameResolver;
 
     public RPC(ILogger logger, Config configuration)
     {
         _logger = logger;
         _configuration = configuration;
+
+        var patch = PatchChecker.GetModType(File.ReadAllBytes("patch"));
+        _carNameResolver = patch == ModType.FlatoutJoint ? new FojCarNameResolver() : new DefaultCarNameResolver();
 
         // Not like you could get this from decompiling anyway. Obfuscation? That sucks.
         _discordRpc = new DiscordRpcClient("1050028179185737728", -1, new NullLogger(), true, null);
@@ -105,7 +110,7 @@ public class RPC
             
             // Add car
             if (_configuration.IncludeCar)
-                richPresence.State += $" with {Info.Race.GetCurrentCarId()}";
+                richPresence.State += $" with {_carNameResolver.GetName(Info.Race.GetCurrentCarId())}";
 
             // Add level and image
             var levelName = Info.Race.GetCurrentLevelName();

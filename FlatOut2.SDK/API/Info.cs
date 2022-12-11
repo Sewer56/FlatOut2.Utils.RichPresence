@@ -1,7 +1,10 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Reflection.Metadata;
+using System.Runtime.InteropServices;
 using FlatOut2.SDK.Enums;
 using FlatOut2.SDK.Functions;
 using FlatOut2.SDK.Structs;
+using FlatOut2.SDK.Utilities;
+using LiteDb = FlatOut2.SDK.Structs.LiteDb;
 
 namespace FlatOut2.SDK.API;
 
@@ -127,6 +130,33 @@ public static class Info
                 return 0;
 
             return sessionPlayer->CarId;
+        }
+
+        /// <summary>
+        /// Gets the name of a car with specified ID.
+        /// </summary>
+        /// <param name="carId">The id of the car.</param>
+        /// <returns>Name of the car in question.</returns>
+        public static unsafe string GetCarName(int carId)
+        {
+            var liteDb = *LiteDb.Instance;
+            if (liteDb == null)
+                return "";
+
+            var nameProperty = "Name\0"u8;
+            using var tableName = new TemporaryNativeString($"FlatOut2.Cars.Car[{carId}]");
+            var table = LiteDbFuncs.GetTable.GetWrapper()((nint)liteDb, (byte*)tableName.Address);
+            if (table == IntPtr.Zero)
+                return "";
+
+            fixed (byte* namePropPtr = &nameProperty[0])
+            {
+                var name = LiteDbFuncs.GetStringFromTable.GetWrapper()(table, namePropPtr);
+                if (name == (void*)IntPtr.Zero)
+                    return "";
+
+                return Marshal.PtrToStringAnsi((nint)name)!;
+            }
         }
 
         /// <summary>
