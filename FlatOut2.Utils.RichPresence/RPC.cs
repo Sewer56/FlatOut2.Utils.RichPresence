@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Net;
 using System.Text;
 using DiscordRPC;
 using DiscordRPC.Logging;
@@ -36,9 +37,12 @@ public class RPC
         _configuration = configuration;
 
         var gameFolder = Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName);
-        var patch = PatchChecker.GetModType(File.ReadAllBytes(Path.Combine(gameFolder, "patch")));
-        _carNameResolver = patch == ModType.FlatoutJoint ? new FojCarNameResolver() : new DefaultCarNameResolver();
-
+        var patchPath = Path.Combine(gameFolder, "patch");
+        if (File.Exists(patchPath))
+            _carNameResolver = PatchChecker.GetModType(File.ReadAllBytes(patchPath)) == ModType.FlatoutJoint ? new FojCarNameResolver() : new DefaultCarNameResolver();
+        else
+            _carNameResolver = new DefaultCarNameResolver();
+        
         // Not like you could get this from decompiling anyway. Obfuscation? That sucks.
         _discordRpc = new DiscordRpcClient("1050028179185737728", -1, new NullLogger(), true, null);
         _discordRpc.Initialize();
