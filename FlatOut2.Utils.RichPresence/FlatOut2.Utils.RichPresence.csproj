@@ -52,8 +52,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\FlatOut2.SDK\FlatOut2.SDK.csproj" />
     <ProjectReference Include="..\Submodules\discord-rpc-csharp\DiscordRPC\DiscordRPC.csproj" />
+    <ProjectReference Include="..\Submodules\FlatOut2.SDK\FlatOut2.SDK\FlatOut2.SDK.csproj" />
   </ItemGroup>
 
 </Project>
