@@ -141,11 +141,18 @@ public class RPC
                 Size = Info.Multiplayer.GetPlayerCount()
             };
 
-            richPresence.Secrets = new Secrets()
+            try
             {
-                // Discord screws up the secret if sent in plaintext, I have no idea why.
-                JoinSecret = Convert.ToBase64String(Encoding.UTF8.GetBytes(serverId))
-            };
+                richPresence.Secrets = new Secrets()
+                {
+                    // Discord screws up the secret if sent in plaintext, I have no idea why.
+                    JoinSecret = Convert.ToBase64String(Encoding.UTF8.GetBytes(serverId))
+                };
+            }
+            catch (Exception)
+            {
+                richPresence.Secrets = null;
+            }
         }
 
         // Send to Discord
