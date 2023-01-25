@@ -133,12 +133,13 @@ public class RPC
         {
             var serverId = Info.Multiplayer.GetLobbyName();
             var partyId = "Party_" + serverId;
+            var lobbySize = Info.Multiplayer.GetPlayerCount();
             richPresence.Party = new Party()
             {
                 ID = partyId,
-                Max = Info.Multiplayer.GetMaxPlayers(),
+                Max = Math.Max(Info.Multiplayer.GetMaxPlayers(), lobbySize),
                 Privacy = Party.PrivacySetting.Public,
-                Size = Info.Multiplayer.GetPlayerCount()
+                Size = lobbySize
             };
 
             try
